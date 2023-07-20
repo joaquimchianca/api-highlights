@@ -1,0 +1,258 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/highlights": {
+            "get": {
+                "description": "Retorna uma lista de todos os destaques disponíveis",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Highlights"
+                ],
+                "summary": "Lista todos os destaques",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Nome do jogador para filtrar os destaques por jogador",
+                        "name": "player",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Ano do destaque para filtrar os destaques por ano",
+                        "name": "year",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de destaques",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/main.highlight"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Destaques não encontrados",
+                        "schema": {
+                            "$ref": "#/definitions/main.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Cria um novo destaque com os detalhes fornecidos",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Highlights"
+                ],
+                "summary": "Adiciona um novo destaque",
+                "parameters": [
+                    {
+                        "description": "Detalhes do novo destaque",
+                        "name": "newHighlight",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.inputHighlight"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Detalhes do destaque criado",
+                        "schema": {
+                            "$ref": "#/definitions/main.highlight"
+                        }
+                    },
+                    "400": {
+                        "description": "Formato JSON inválido ou detalhes ausentes",
+                        "schema": {
+                            "$ref": "#/definitions/main.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/highlights/{id}": {
+            "get": {
+                "description": "Retorna os detalhes de um destaque específico pelo seu ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Highlights"
+                ],
+                "summary": "Retorna um destaque pelo seu ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do destaque",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalhes do destaque",
+                        "schema": {
+                            "$ref": "#/definitions/main.highlight"
+                        }
+                    },
+                    "404": {
+                        "description": "Destaque não encontrado",
+                        "schema": {
+                            "$ref": "#/definitions/main.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Remove um destaque existente pelo seu ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Highlights"
+                ],
+                "summary": "Remove um destaque existente",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do destaque a ser removido",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Destaque removido com sucesso",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Destaque não encontrado",
+                        "schema": {
+                            "$ref": "#/definitions/main.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Modifica os detalhes de um destaque existente pelo seu ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Highlights"
+                ],
+                "summary": "Modifica um destaque existente",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do destaque a ser modificado",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Detalhes atualizados do destaque",
+                        "name": "updatedHighlight",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.inputHighlight"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalhes do destaque modificado",
+                        "schema": {
+                            "$ref": "#/definitions/main.highlight"
+                        }
+                    },
+                    "404": {
+                        "description": "Destaque não encontrado",
+                        "schema": {
+                            "$ref": "#/definitions/main.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "main.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "main.highlight": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "play": {
+                    "type": "string"
+                },
+                "player": {
+                    "type": "string"
+                },
+                "year": {
+                    "type": "string"
+                }
+            }
+        },
+        "main.inputHighlight": {
+            "type": "object",
+            "properties": {
+                "link": {
+                    "type": "string"
+                },
+                "play": {
+                    "type": "string"
+                },
+                "player": {
+                    "type": "string"
+                },
+                "year": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

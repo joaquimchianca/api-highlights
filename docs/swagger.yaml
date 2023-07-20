@@ -1,0 +1,168 @@
+definitions:
+  main.ErrorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  main.highlight:
+    properties:
+      id:
+        type: string
+      link:
+        type: string
+      play:
+        type: string
+      player:
+        type: string
+      year:
+        type: string
+    type: object
+  main.inputHighlight:
+    properties:
+      link:
+        type: string
+      play:
+        type: string
+      player:
+        type: string
+      year:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /highlights:
+    get:
+      consumes:
+      - application/json
+      description: Retorna uma lista de todos os destaques disponíveis
+      parameters:
+      - description: Nome do jogador para filtrar os destaques por jogador
+        in: query
+        name: player
+        type: string
+      - description: Ano do destaque para filtrar os destaques por ano
+        in: query
+        name: year
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Lista de destaques
+          schema:
+            items:
+              $ref: '#/definitions/main.highlight'
+            type: array
+        "404":
+          description: Destaques não encontrados
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      summary: Lista todos os destaques
+      tags:
+      - Highlights
+    post:
+      consumes:
+      - application/json
+      description: Cria um novo destaque com os detalhes fornecidos
+      parameters:
+      - description: Detalhes do novo destaque
+        in: body
+        name: newHighlight
+        required: true
+        schema:
+          $ref: '#/definitions/main.inputHighlight'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Detalhes do destaque criado
+          schema:
+            $ref: '#/definitions/main.highlight'
+        "400":
+          description: Formato JSON inválido ou detalhes ausentes
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      summary: Adiciona um novo destaque
+      tags:
+      - Highlights
+  /highlights/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove um destaque existente pelo seu ID
+      parameters:
+      - description: ID do destaque a ser removido
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Destaque removido com sucesso
+          schema:
+            type: string
+        "404":
+          description: Destaque não encontrado
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      summary: Remove um destaque existente
+      tags:
+      - Highlights
+    get:
+      consumes:
+      - application/json
+      description: Retorna os detalhes de um destaque específico pelo seu ID
+      parameters:
+      - description: ID do destaque
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Detalhes do destaque
+          schema:
+            $ref: '#/definitions/main.highlight'
+        "404":
+          description: Destaque não encontrado
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      summary: Retorna um destaque pelo seu ID
+      tags:
+      - Highlights
+    patch:
+      consumes:
+      - application/json
+      description: Modifica os detalhes de um destaque existente pelo seu ID
+      parameters:
+      - description: ID do destaque a ser modificado
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Detalhes atualizados do destaque
+        in: body
+        name: updatedHighlight
+        required: true
+        schema:
+          $ref: '#/definitions/main.inputHighlight'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Detalhes do destaque modificado
+          schema:
+            $ref: '#/definitions/main.highlight'
+        "404":
+          description: Destaque não encontrado
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      summary: Modifica um destaque existente
+      tags:
+      - Highlights
+swagger: "2.0"
